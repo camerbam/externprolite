@@ -1,0 +1,5 @@
+.gitattributes text
+*CMakeLists.txt text
+README.md text
+LICENSE text
+

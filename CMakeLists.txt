@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(externpro)
+project(externprolite)
 include(modules/macpro.cmake)
 proInit()
 proAddProjectDir(projects)
