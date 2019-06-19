@@ -185,7 +185,7 @@ function(build_boostlibs)
     set(boost_VARIANT "debug,release")
   elseif(XP_BUILD_RELEASE)
     set(boost_VARIANT "release")
-  # NOTE: currently externpro doesn't support building *only* Debug
+  # NOTE: currently externprolite doesn't support building *only* Debug
   elseif(XP_BUILD_DEBUG) # so this elseif is "just in case..."
     set(boost_VARIANT "debug")
   endif()

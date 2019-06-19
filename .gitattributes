@@ -1,6 +1,7 @@
 .gitattributes text
 *CMakeLists.txt text
-README.md text
+*README.md text
+*.dot text
 LICENSE text
 *.cmake text
 *.in text

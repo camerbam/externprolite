@@ -40,7 +40,7 @@ function(build_curl)
   set(depTgts ${libssh2Tgts} ${caresTgts})
   if(XP_DEFAULT OR XP_PRO_CMAKEXP)
     # if we're building cmake, we want it built before curl
-    # otherwise cmake finds externpro curl and not it's own internal cmcurl
+    # otherwise cmake finds externprolite curl and not it's own internal cmcurl
     build_cmakexp(cmTgts)
     list(APPEND depTgts ${cmTgts})
   endif()

@@ -116,8 +116,8 @@ function(build_wxv)
       --with-expat=builtin --with-regex=builtin --with-zlib=builtin
       #TODO: --without-subdirs (what does this option do? saw it used in wx forums)
       --disable-shared --disable-precomp-headers --without-libnotify
-      # NOTE: without-libnotify so we can build externpro on a system that has libnotify
-      # and use the built externpro installer on a system that doesn't have it
+      # NOTE: without-libnotify so we can build externprolite on a system that has libnotify
+      # and use the built externprolite installer on a system that doesn't have it
       --enable-display --enable-std_string --enable-std_iostreams --enable-std_containers
       )
     set(XP_CONFIGURE_Install --prefix=<INSTALL_DIR> --includedir=<INSTALL_DIR>/include
@@ -155,7 +155,7 @@ function(build_wxv)
       SOURCE_DIR ${wxSOURCE_DIR}  INSTALL_DIR ${wxSTAGE_DIR}
       PATCH_COMMAND ""
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -Dsrc:STRING=${wxWINUNDEF}
-        -Ddst:STRING=<INSTALL_DIR>/externpro/
+        -Ddst:STRING=<INSTALL_DIR>/externprolite/
         -P ${MODULES_DIR}/cmscopyfiles.cmake
       BUILD_COMMAND ${CMAKE_COMMAND} -Dsrc:STRING=${wxSOURCE_DIR}/${TIFF_HDRS}
         -Ddst:STRING=<INSTALL_DIR>/wx/tiff/
