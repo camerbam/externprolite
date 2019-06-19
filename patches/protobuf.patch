@@ -1,6 +1,6 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000..3eb6f89
+index 00000000..3eb6f897
 --- /dev/null
 +++ b/CMakeLists.txt
 @@ -0,0 +1,3 @@
@@ -8,7 +8,7 @@ index 0000000..3eb6f89
 +include(flags OPTIONAL)
 +add_subdirectory(cmake)
 diff --git a/cmake/CMakeLists.txt b/cmake/CMakeLists.txt
-index 33e069f..6a32734 100644
+index 33e069fe..6a327342 100644
 --- a/cmake/CMakeLists.txt
 +++ b/cmake/CMakeLists.txt
 @@ -44,7 +44,21 @@ if (CMAKE_USE_PTHREADS_INIT)
@@ -69,7 +69,7 @@ index 33e069f..6a32734 100644
  include(libprotobuf.cmake)
  include(libprotoc.cmake)
 diff --git a/cmake/install.cmake b/cmake/install.cmake
-index dbb4265..e1826c5 100644
+index dbb4265d..e1826c57 100644
 --- a/cmake/install.cmake
 +++ b/cmake/install.cmake
 @@ -85,7 +85,7 @@ endforeach()
@@ -89,7 +89,7 @@ index dbb4265..e1826c5 100644
 +  DESTINATION "lib/cmake/protobuf${ver}"
    COMPONENT protobuf-export)
 diff --git a/cmake/libprotobuf-lite.cmake b/cmake/libprotobuf-lite.cmake
-index 9fafc31..49944df 100644
+index 9fafc316..49944df2 100644
 --- a/cmake/libprotobuf-lite.cmake
 +++ b/cmake/libprotobuf-lite.cmake
 @@ -25,8 +25,8 @@ set(libprotobuf_lite_files
@@ -104,7 +104,7 @@ index 9fafc31..49944df 100644
 -    OUTPUT_NAME ${LIB_PREFIX}protobuf-lite)
 +    OUTPUT_NAME ${LIB_PREFIX}protobuf-lite${ver})
 diff --git a/cmake/libprotobuf.cmake b/cmake/libprotobuf.cmake
-index 64a9cae..23919c2 100644
+index 64a9cae0..23919c2a 100644
 --- a/cmake/libprotobuf.cmake
 +++ b/cmake/libprotobuf.cmake
 @@ -54,8 +54,8 @@ set(libprotobuf_files
@@ -119,7 +119,7 @@ index 64a9cae..23919c2 100644
 -    OUTPUT_NAME ${LIB_PREFIX}protobuf)
 +    OUTPUT_NAME ${LIB_PREFIX}protobuf${ver})
 diff --git a/cmake/libprotoc.cmake b/cmake/libprotoc.cmake
-index 7aa92ee..675faf5 100644
+index 7aa92ee1..675faf5c 100644
 --- a/cmake/libprotoc.cmake
 +++ b/cmake/libprotoc.cmake
 @@ -93,4 +93,4 @@ add_library(libprotoc ${libprotoc_files})
@@ -129,7 +129,7 @@ index 7aa92ee..675faf5 100644
 -    OUTPUT_NAME ${LIB_PREFIX}protoc)
 +    OUTPUT_NAME ${LIB_PREFIX}protoc${ver})
 diff --git a/cmake/protobuf-module.cmake.in b/cmake/protobuf-module.cmake.in
-index d81dc45..5627d1f 100644
+index d81dc459..5627d1fd 100644
 --- a/cmake/protobuf-module.cmake.in
 +++ b/cmake/protobuf-module.cmake.in
 @@ -25,7 +25,7 @@ function(PROTOBUF_GENERATE_CPP SRCS HDRS)
@@ -142,7 +142,7 @@ index d81dc45..5627d1f 100644
    if(DEFINED PROTOBUF_IMPORT_DIRS)
      foreach(DIR ${PROTOBUF_IMPORT_DIRS})
 diff --git a/cmake/protoc.cmake b/cmake/protoc.cmake
-index 4f07c38..b3617ed 100644
+index 4f07c389..b3617ed4 100644
 --- a/cmake/protoc.cmake
 +++ b/cmake/protoc.cmake
 @@ -4,3 +4,7 @@ set(protoc_files
@@ -154,7 +154,7 @@ index 4f07c38..b3617ed 100644
 +  OUTPUT_NAME protoc${ver}
 +)
 diff --git a/src/google/protobuf/compiler/command_line_interface.cc b/src/google/protobuf/compiler/command_line_interface.cc
-index 26a4f0b..175a398 100644
+index 26a4f0b0..175a398d 100644
 --- a/src/google/protobuf/compiler/command_line_interface.cc
 +++ b/src/google/protobuf/compiler/command_line_interface.cc
 @@ -47,6 +47,9 @@
@@ -168,7 +168,7 @@ index 26a4f0b..175a398 100644
  #include <memory>
  #ifndef _SHARED_PTR_H
 diff --git a/src/google/protobuf/message.cc b/src/google/protobuf/message.cc
-index 2f6416d..9a58678 100644
+index 2f6416d0..9a586783 100644
 --- a/src/google/protobuf/message.cc
 +++ b/src/google/protobuf/message.cc
 @@ -495,11 +495,19 @@ Message* GenericTypeHandler<Message>::NewFromPrototype(
@@ -192,7 +192,7 @@ index 2f6416d..9a58678 100644
      Message* value) {
    return value->GetMaybeArenaPointer();
 diff --git a/src/google/protobuf/stubs/port.h b/src/google/protobuf/stubs/port.h
-index 9ea34cd..eebe9d7 100644
+index 9ea34cde..eebe9d73 100644
 --- a/src/google/protobuf/stubs/port.h
 +++ b/src/google/protobuf/stubs/port.h
 @@ -267,11 +267,9 @@ inline void GOOGLE_UNALIGNED_STORE64(void *p, uint64 v) {

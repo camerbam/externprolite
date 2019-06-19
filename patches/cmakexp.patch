@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index e20d770..b1bde41 100644
+index e20d770242..b1bde41f2a 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -84,6 +84,7 @@ endif()
@@ -20,7 +20,7 @@ index e20d770..b1bde41 100644
      add_subdirectory(Utilities/cmcurl)
      CMAKE_SET_TARGET_FOLDER(cmcurl "Utilities/3rdParty")
 diff --git a/Utilities/cmcurl/CMakeLists.txt b/Utilities/cmcurl/CMakeLists.txt
-index 0128214..65725d7 100644
+index 012821415a..65725d794f 100644
 --- a/Utilities/cmcurl/CMakeLists.txt
 +++ b/Utilities/cmcurl/CMakeLists.txt
 @@ -447,7 +447,11 @@ if(CMAKE_USE_DARWINSSL)
@@ -37,7 +37,7 @@ index 0128214..65725d7 100644
    set(USE_OPENSSL ON)
    set(HAVE_LIBCRYPTO ON)
 diff --git a/Utilities/cmlibarchive/CMakeLists.txt b/Utilities/cmlibarchive/CMakeLists.txt
-index 206f3c6..96b0011 100644
+index 206f3c6a5c..96b0011b81 100644
 --- a/Utilities/cmlibarchive/CMakeLists.txt
 +++ b/Utilities/cmlibarchive/CMakeLists.txt
 @@ -518,7 +518,11 @@ ENDIF(ENABLE_NETTLE)

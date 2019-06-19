@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8aa44bb..a3870e8 100644
+index 8aa44bbe8..a3870e8e1 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -44,6 +44,7 @@ include(Utilities)
@@ -165,7 +165,7 @@ index 8aa44bb..a3870e8 100644
      PATTERN "curlbuild.h" EXCLUDE)
  
 diff --git a/include/curl/curl.h b/include/curl/curl.h
-index ae1b0e4..aad4974 100644
+index ae1b0e4db..aad497433 100644
 --- a/include/curl/curl.h
 +++ b/include/curl/curl.h
 @@ -179,7 +179,7 @@ typedef int (*curl_xferinfo_callback)(void *clientp,
@@ -178,7 +178,7 @@ index ae1b0e4..aad4974 100644
  
  #ifndef CURL_MAX_HTTP_HEADER
 diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
-index 49a3409..5fe65a8 100644
+index 49a340938..5fe65a843 100644
 --- a/lib/CMakeLists.txt
 +++ b/lib/CMakeLists.txt
 @@ -98,7 +98,11 @@ if(WIN32)
@@ -195,7 +195,7 @@ index 49a3409..5fe65a8 100644
    RUNTIME DESTINATION bin)
 +install(EXPORT ${targetsFile} DESTINATION lib/cmake)
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index bfb866b..7304c8e 100644
+index bfb866bd9..7304c8ee3 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -71,8 +71,11 @@ target_link_libraries( ${EXE_NAME} libcurl ${CURL_LIBS})

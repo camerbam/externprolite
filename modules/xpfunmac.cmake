@@ -544,7 +544,7 @@ function(xpMarkdownReadmeAppend proj)
 endfunction()
 
 function(ipMarkdownPro)
-  set(oneValueArgs NAME DESC VER GIT_REF GIT_TAG SUPERPRO DIFF PATCH)
+  set(oneValueArgs NAME DESC VER GIT_REF GIT_TAG SUPERPRO DIFF PATCH GRAPH)
   set(multiValueArgs WEB LICENSE REPO)
   cmake_parse_arguments(P "" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   if(DEFINED P_WEB)

@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 77a591f..9e92472 100644
+index 77a591f8d..9e92472d7 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -20,6 +20,7 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Mo
@@ -143,7 +143,7 @@ index 77a591f..9e92472 100644
  # Tests
  IF (BUILD_CLAR)
 diff --git a/include/git2/common.h b/include/git2/common.h
-index d84a765..a8177dd 100644
+index d84a76512..a8177ddac 100644
 --- a/include/git2/common.h
 +++ b/include/git2/common.h
 @@ -10,7 +10,7 @@
@@ -156,7 +156,7 @@ index d84a765..a8177dd 100644
  #else
  #	include <inttypes.h>
 diff --git a/src/win32/posix.h b/src/win32/posix.h
-index 104966e..9ac7843 100644
+index 104966edc..9ac78430b 100644
 --- a/src/win32/posix.h
 +++ b/src/win32/posix.h
 @@ -41,7 +41,7 @@ extern int p_chdir(const char* path);
@@ -169,7 +169,7 @@ index 104966e..9ac7843 100644
  /* p_lstat is almost but not quite POSIX correct.  Specifically, the use of
   * ENOTDIR is wrong, in that it does not mean precisely that a non-directory
 diff --git a/src/win32/posix_w32.c b/src/win32/posix_w32.c
-index 346f537..ad3f985 100644
+index 346f537e4..ad3f985bb 100644
 --- a/src/win32/posix_w32.c
 +++ b/src/win32/posix_w32.c
 @@ -36,12 +36,28 @@
@@ -207,7 +207,7 @@ index 346f537..ad3f985 100644
  
 diff --git a/tests/core/ftruncate.c b/tests/core/ftruncate.c
 new file mode 100644
-index 0000000..21981d6
+index 000000000..21981d677
 --- /dev/null
 +++ b/tests/core/ftruncate.c
 @@ -0,0 +1,48 @@

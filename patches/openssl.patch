@@ -1,6 +1,6 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000..12ecac2
+index 0000000000..12ecac2705
 --- /dev/null
 +++ b/CMakeLists.txt
 @@ -0,0 +1,63 @@
@@ -68,7 +68,7 @@ index 0000000..12ecac2
 +install(FILES ${misc} DESTINATION share${verDir}/openssl)
 +install(EXPORT ${targetsFile} DESTINATION lib/cmake)
 diff --git a/Makefile.org b/Makefile.org
-index b7a3f96..8becb80 100644
+index b7a3f96c9f..8becb80042 100644
 --- a/Makefile.org
 +++ b/Makefile.org
 @@ -274,17 +274,17 @@ build_all: build_libs build_apps build_tests build_tools
@@ -148,7 +148,7 @@ index b7a3f96..8becb80 100644
  	here="`pwd`"; \
  	filecase=; \
 diff --git a/Makefile.shared b/Makefile.shared
-index e753f44..8d57163 100644
+index e753f44e18..8d57163461 100644
 --- a/Makefile.shared
 +++ b/Makefile.shared
 @@ -105,6 +105,7 @@ LINK_SO=	\
@@ -169,7 +169,7 @@ index e753f44..8d57163 100644
  		fi; \
 diff --git a/cpln.cmake b/cpln.cmake
 new file mode 100644
-index 0000000..ba69eaa
+index 0000000000..ba69eaa9b2
 --- /dev/null
 +++ b/cpln.cmake
 @@ -0,0 +1,26 @@
@@ -201,7 +201,7 @@ index 0000000..ba69eaa
 +endforeach()
 diff --git a/crypto/CMakeLists.txt b/crypto/CMakeLists.txt
 new file mode 100644
-index 0000000..f3c53fd
+index 0000000000..f3c53fd097
 --- /dev/null
 +++ b/crypto/CMakeLists.txt
 @@ -0,0 +1,2082 @@
@@ -2288,7 +2288,7 @@ index 0000000..f3c53fd
 +  )
 +install(FILES ${${lib_name}_exhdrs} DESTINATION include${verDir}/${PROJECT_NAME})
 diff --git a/crypto/Makefile b/crypto/Makefile
-index 9a39e93..15828ce 100644
+index 9a39e934ad..15828ced99 100644
 --- a/crypto/Makefile
 +++ b/crypto/Makefile
 @@ -85,11 +85,11 @@ testapps:
@@ -2334,7 +2334,7 @@ index 9a39e93..15828ce 100644
  	@target=lint; $(RECURSIVE_MAKE)
 diff --git a/crypto/buildinf.h.cmake b/crypto/buildinf.h.cmake
 new file mode 100644
-index 0000000..e6fd68a
+index 0000000000..e6fd68a775
 --- /dev/null
 +++ b/crypto/buildinf.h.cmake
 @@ -0,0 +1,6 @@
@@ -2345,7 +2345,7 @@ index 0000000..e6fd68a
 +  #define DATE "@BUILDINF_DATE@"
 +#endif
 diff --git a/crypto/objects/Makefile b/crypto/objects/Makefile
-index a8aedbd..aaa8d29 100644
+index a8aedbd422..aaa8d2956b 100644
 --- a/crypto/objects/Makefile
 +++ b/crypto/objects/Makefile
 @@ -44,11 +44,11 @@ obj_dat.h: obj_dat.pl obj_mac.h
@@ -2364,7 +2364,7 @@ index a8aedbd..aaa8d29 100644
  files:
  	$(PERL) $(TOP)/util/files.pl Makefile >> $(TOP)/MINFO
 diff --git a/engines/Makefile b/engines/Makefile
-index da6c875..d675f5c 100644
+index da6c8750b5..d675f5cd12 100644
 --- a/engines/Makefile
 +++ b/engines/Makefile
 @@ -72,7 +72,7 @@ top:
@@ -2396,7 +2396,7 @@ index da6c875..d675f5c 100644
  	ctags $(SRC)
 diff --git a/ssl/CMakeLists.txt b/ssl/CMakeLists.txt
 new file mode 100644
-index 0000000..8916231
+index 0000000000..8916231606
 --- /dev/null
 +++ b/ssl/CMakeLists.txt
 @@ -0,0 +1,120 @@
