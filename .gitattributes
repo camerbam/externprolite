@@ -2,4 +2,5 @@
 *CMakeLists.txt text
 README.md text
 LICENSE text
-
+*.cmake text
+*.in text

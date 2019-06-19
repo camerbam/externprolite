@@ -1,7 +1,7 @@
 ########################################
 # macpro.cmake
 #  mac = macros
-#  pro = meant for internal use by externpro
+#  pro = meant for internal use by externprolite
 # macros should begin with pro prefix
 
 macro(proInit) # NOTE: called by top-level CMakeLists.txt
@@ -22,10 +22,10 @@ macro(proInit) # NOTE: called by top-level CMakeLists.txt
   if(NOT EXISTS ${DWNLD_DIR})
     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${DWNLD_DIR})
   endif()
-  if(${CMAKE_PROJECT_NAME} STREQUAL externpro)
+  if(${CMAKE_PROJECT_NAME} STREQUAL externprolite)
     set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
-  elseif(DEFINED externpro_DIR)
-    set(MODULES_DIR ${externpro_DIR}/share/cmake)
+  elseif(DEFINED externprolite_DIR)
+    set(MODULES_DIR ${externprolite_DIR}/share/cmake)
   else()
     message(FATAL_ERROR "unable to set MODULES_DIR")
   endif()
@@ -281,7 +281,7 @@ macro(proSetStageDir) # NOTE: called by cmake-generated pro_build.cmake file
     ${STAGE_DIR}/share/cmake/Find${CMAKE_PROJECT_NAME}.cmake
     @ONLY NEWLINE_STYLE LF
     )
-  if(${CMAKE_PROJECT_NAME} STREQUAL externpro)
+  if(${CMAKE_PROJECT_NAME} STREQUAL externprolite)
     configure_file(${MODULES_DIR}/xpopts.cmake.in
       ${STAGE_DIR}/share/cmake/xpopts.cmake
       @ONLY NEWLINE_STYLE LF
@@ -303,7 +303,7 @@ macro(proSetCpackOpts) # NOTE: called by proExecuteStep
     set(CPACK_PACKAGE_VERSION "unknown-version")
   endif()
   if(NOT DEFINED CPACK_PACKAGE_VENDOR)
-    set(CPACK_PACKAGE_VENDOR "smanders")
+    set(CPACK_PACKAGE_VENDOR "cameronfrandsen")
   endif()
   if(UNIX AND NOT DEFINED CPACK_GENERATOR)
     set(CPACK_GENERATOR STGZ) # STGZ = Self extracting Tar GZip compression

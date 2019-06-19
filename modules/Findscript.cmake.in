@@ -1,8 +1,8 @@
 # - Find an @CMAKE_PROJECT_NAME@ installation.
 # @CMAKE_PROJECT_NAME@_DIR
 ################################################################################
-# should match xpGetCompilerPrefix in externpro's xpfunmac.cmake
-# NOTE: wanted to use externpro version, but chicken-egg problem
+# should match xpGetCompilerPrefix in externprolite's xpfunmac.cmake
+# NOTE: wanted to use externprolite version, but chicken-egg problem
 function(getCompilerPrefix _ret)
   set(options GCC_TWO_VER)
   cmake_parse_arguments(X "${options}" "" "" ${ARGN})

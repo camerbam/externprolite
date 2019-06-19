@@ -22,7 +22,7 @@ if(NOT GIT_FOUND AND NOT UNIX)
 endif()
 if(GIT_FOUND AND EXISTS "${xpSourceDir}/.git")
   # xpRelBranch (release branch): date yyyymmdd-gitdescribe (20120518-gitdescribe)
-  # other branches: user-branch-gitdescribe (smanders-padawan-gitdescribe)
+  # other branches: user-branch-gitdescribe (cfrandsen-padawan-gitdescribe)
   execute_process(COMMAND ${GIT_EXECUTABLE} name-rev --name-only HEAD
     WORKING_DIRECTORY ${xpSourceDir}
     OUTPUT_VARIABLE refsBranchName

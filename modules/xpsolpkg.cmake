@@ -1,6 +1,6 @@
 ########################################
 # xpsolpkg.cmake
-#  xp = intended to be used both internally (by externpro) and externally
+#  xp = intended to be used both internally (by externprolite) and externally
 #  sol = solaris
 #  pkg = package
 # cmake functions to aid in building Solaris 10 pkg installers
