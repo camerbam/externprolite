@@ -1,4 +1,5 @@
 Based off of externpro: https://github.com/smanders/externpro
+All credit should be accredited to smanders
 
 # externprolite
 [![GitHub license](https://img.shields.io/github/license/cameronfrandsen/externpro.svg)](https://github.com/cameronfrandsen/externpro) [![GitHub release](https://img.shields.io/github/release/cameronfrandsen/externprolite.svg)](https://github.com/cameronfrandsen/externprolite)
