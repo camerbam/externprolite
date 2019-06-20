@@ -234,6 +234,7 @@ macro(proSetStageDir) # NOTE: called by cmake-generated pro_build.cmake file
       OUTPUT_STRIP_TRAILING_WHITESPACE
       )
     if(GIT_DESCRIBE)
+      string(REPLACE lite "" GIT_DESCRIBE ${GIT_DESCRIBE})
       option(XP_DIRTYREPO "mark stage directory with dirtyrepo" ON)
       mark_as_advanced(XP_DIRTYREPO)
       if(XP_DIRTYREPO)
