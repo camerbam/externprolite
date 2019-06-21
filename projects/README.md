@@ -10,7 +10,7 @@
 |[libgit2](https://libgit2.github.com/ 'libgit2 website')|[open](https://github.com/libgit2/libgit2/blob/master/README.md#license 'GPL2 with linking exception')|portable, pure C implementation of the Git core methods|0.22.2|[repo](https://github.com/smanders/libgit2 'forked libgit2 repo on github')|[diff](https://github.com/smanders/libgit2/compare/libgit2:v0.22.2...xp0.22.2 'patch/diff')|
 |[libssh2](http://www.libssh2.org/ 'libssh2 website')|[open](http://www.libssh2.org/license.html 'BSD 3-Clause License - https://www.openhub.net/licenses/BSD-3-Clause')|client-side C library implementing SSH2 protocol|1.5.0|[repo](https://github.com/smanders/libssh2 'forked libssh2 repo on github')|[diff](https://github.com/smanders/libssh2/compare/libssh2:libssh2-1.5.0...xp-1.5.0 'patch/diff')|
 |[LLVM](http://llvm.org/ 'LLVM website')|[open](http://llvm.org/svn/llvm-project/llvm/trunk/LICENSE.TXT 'LLVM Release License')|The LLVM Compiler Infrastructure|3.9.0|[repo](https://github.com/llvm-mirror/llvm 'llvm repo on github')|none|
-|[Node.js](http://nodejs.org 'Node.js website')|[open](https://raw.githubusercontent.com/nodejs/node/v8.12.0/LICENSE 'MIT license')|platform to build scalable network applications|8.12.0|[repo](https://github.com/nodejs/node 'node repo on github')|none|
+|[Node.js](http://nodejs.org 'Node.js website')|[open](https://raw.githubusercontent.com/nodejs/node/v10.16.0/LICENSE 'MIT license')|platform to build scalable network applications|10.16.0|[repo](https://github.com/nodejs/node 'node repo on github')|[diff](https://github.com/smanders/node/compare/nodejs:v10.16.0...xp10.16.0 'patch/diff')|
 |[NuGet](https://www.nuget.org 'NuGet website')|[MIT](https://docs.microsoft.com/en-us/nuget/policies/nuget-faq#nuget-command-line 'MIT')|pre-built (MSW) the package manager for .NET|2.8.6|[repo](https://github.com/NuGet 'NuGet on github')|none|
 |[OpenSSL](http://www.openssl.org/ 'OpenSSL website')|[open](http://www.openssl.org/source/license.html 'OpenSSL, SSLeay License: BSD-style')|Cryptography and SSL/TLS Toolkit|1.0.2a|[repo](https://github.com/smanders/openssl 'forked openssl repo on github')|[diff](https://github.com/smanders/openssl/compare/openssl:OpenSSL_1_0_2a...xp_1_0_2a 'patch/diff')|
 |[patch](http://www.gnu.org/software/patch 'GNU patch website')|[GPL](http://www.gnu.org/licenses/gpl.html 'GNU GPL v3')|pre-built (MSW), built here (non-MSW) used internally to apply a patch file of differences|2.5.9-7/2.7.5|[repo](http://git.savannah.gnu.org/cgit/patch.git 'patch (git) repo on gnu.org')|none|
@@ -41,32 +41,43 @@
 
 ## dependency graph
 
-![deps.dot graph](https://g.gravizo.com/source/customgraph01?https%3A%2F%2Fraw.githubusercontent.com%2Fcfrandsen%2Fexternpro%2Fdev%2Fprojects%2FREADME.md)
+![deps.dot graph](https://g.gravizo.com/source/depgraph_94b77ed8ca57d3f6818f33491f7dd078?https%3A%2F%2Fraw.githubusercontent.com%2Fcameronfrandsen%2Fexternprolite%2Fdev%2Fprojects%2FREADME.md)
 <details>
 <summary></summary>
-customgraph01
+depgraph_94b77ed8ca57d3f6818f33491f7dd078
 digraph GG {
   node [fontsize=12];
-  zlib [shape=diamond];
-  openssl [shape=diamond];
-  cares [label="c-ares" shape=diamond];
-  libssh2 [shape=diamond];
-  libgit2 [shape=diamond];
-  curl [shape=diamond];
-  protobuf [shape=diamond];
-  ffmpeg [shape=diamond];
-  openh264 [shape=diamond];
-  bzip2 [shape=diamond];
   boost [shape=diamond];
-  libssh2 -> zlib;
-  libssh2 -> openssl;
-  libgit2 -> libssh2;
-  curl -> libssh2;
-  curl -> cares;
-  protobuf -> zlib;
-  ffmpeg -> openh264;
   boost -> zlib;
   boost -> bzip2;
+  bzip2 [shape=diamond];
+  cares [label="c-ares" shape=diamond];
+  clang [shape=box];
+  clang -> llvm;
+  clangformat [shape=box];
+  clangformat -> clang;
+  clangtoolsextra [shape=box];
+  clangtoolsextra -> llvm;
+  curl [shape=diamond];
+  curl -> libssh2;
+  curl -> cares;
+  libgit2 [shape=diamond];
+  libgit2 -> libssh2;
+  libssh2 [shape=diamond];
+  libssh2 -> zlib;
+  libssh2 -> openssl;
+  llvm [shape=box];
+  nodejs [shape=diamond];
+  nodejs -> nasm;
+  openssl [shape=diamond];
+  protobuf [shape=diamond];
+  protobuf -> zlib;
+  wx [shape=diamond];
+  wxinclude [shape=box];
+  wxinclude -> boost;
+  wxx [shape=diamond];
+  wxx -> wx;
+  zlib [shape=diamond];
 }
-customgraph01
+depgraph_94b77ed8ca57d3f6818f33491f7dd078
 </details>
