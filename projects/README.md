@@ -41,32 +41,43 @@
 
 ## dependency graph
 
-![deps.dot graph](https://g.gravizo.com/source/customgraph01?https%3A%2F%2Fraw.githubusercontent.com%2Fcfrandsen%2Fexternpro%2Fdev%2Fprojects%2FREADME.md)
+![deps.dot graph](https://g.gravizo.com/source/depgraph_94b77ed8ca57d3f6818f33491f7dd078?https%3A%2F%2Fraw.githubusercontent.com%2Fcameronfrandsen%2Fexternprolite%2Fdev%2Fprojects%2FREADME.md)
 <details>
 <summary></summary>
-customgraph01
+depgraph_94b77ed8ca57d3f6818f33491f7dd078
 digraph GG {
   node [fontsize=12];
-  zlib [shape=diamond];
-  openssl [shape=diamond];
-  cares [label="c-ares" shape=diamond];
-  libssh2 [shape=diamond];
-  libgit2 [shape=diamond];
-  curl [shape=diamond];
-  protobuf [shape=diamond];
-  ffmpeg [shape=diamond];
-  openh264 [shape=diamond];
-  bzip2 [shape=diamond];
   boost [shape=diamond];
-  libssh2 -> zlib;
-  libssh2 -> openssl;
-  libgit2 -> libssh2;
-  curl -> libssh2;
-  curl -> cares;
-  protobuf -> zlib;
-  ffmpeg -> openh264;
   boost -> zlib;
   boost -> bzip2;
+  bzip2 [shape=diamond];
+  cares [label="c-ares" shape=diamond];
+  clang [shape=box];
+  clang -> llvm;
+  clangformat [shape=box];
+  clangformat -> clang;
+  clangtoolsextra [shape=box];
+  clangtoolsextra -> llvm;
+  curl [shape=diamond];
+  curl -> libssh2;
+  curl -> cares;
+  libgit2 [shape=diamond];
+  libgit2 -> libssh2;
+  libssh2 [shape=diamond];
+  libssh2 -> zlib;
+  libssh2 -> openssl;
+  llvm [shape=box];
+  nodejs [shape=diamond];
+  nodejs -> nasm;
+  openssl [shape=diamond];
+  protobuf [shape=diamond];
+  protobuf -> zlib;
+  wx [shape=diamond];
+  wxinclude [shape=box];
+  wxinclude -> boost;
+  wxx [shape=diamond];
+  wxx -> wx;
+  zlib [shape=diamond];
 }
-customgraph01
+depgraph_94b77ed8ca57d3f6818f33491f7dd078
 </details>
