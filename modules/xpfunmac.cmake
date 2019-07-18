@@ -1971,6 +1971,8 @@ macro(xpSetFlagsGccDebug)
   endif()
   if(XP_COVERAGE AND CMAKE_BUILD_TYPE STREQUAL Debug)
     find_program(XP_PATH_LCOV lcov)
+    find_program(XP_PATH_LCOV lcov)
+    xpGetPkgVar(lcov-to-cobertura-xml SCRIPT) # sets LCOV-TO-COBERTURA-XML_SCRIPT
     find_program(XP_PATH_GENHTML genhtml)
     if(XP_PATH_LCOV AND XP_PATH_GENHTML)
       if(DEFINED externprolite_DIR AND EXISTS ${externprolite_DIR})
@@ -1990,7 +1992,7 @@ macro(xpSetFlagsGccDebug)
           -a ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-test.info -o ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.info
         COMMAND ${XP_PATH_LCOV} --remove ${PROJECT_NAME}.info ${XP_COVERAGE_RM} --output-file ${PROJECT_NAME}-cleaned.info
         COMMAND ${XP_PATH_GENHTML} -o report ${PROJECT_NAME}-cleaned.info
-        COMMAND ${CMAKE_COMMAND} -E remove ${PROJECT_NAME}*.info
+        COMMAND python ${LCOV-TO-COBERTURA-XML_SCRIPT} ${PROJECT_NAME}-cleaned.info
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         )
       xpStringAppendIfDne(CMAKE_CXX_FLAGS_DEBUG "--coverage")
