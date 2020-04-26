@@ -1,7 +1,7 @@
 # boost
 xpProOption(boost DBG)
-set(BOOST_OLDVER 1.67.0)
-set(BOOST_NEWVER 1.67.0)
+set(BOOST_OLDVER 1.72.0)
+set(BOOST_NEWVER 1.72.0)
 ####################
 function(patch_boost)
   string(REGEX REPLACE "([0-9]+)\\.([0-9]+)(\\.[0-9]+)?" "\\1_\\2" ov ${BOOST_OLDVER})
@@ -56,9 +56,14 @@ function(build_boost)
     )
   list(LENGTH BOOST_VERSIONS NUM_VER)
   if(NUM_VER EQUAL 1)
-    set(USE_SCRIPT_INSERT "set(XP_USE_LATEST_BOOST ON) # currently only one version supported")
+    if(BOOST_VERSIONS VERSION_EQUAL BOOST_OLDVER)
+      set(boolean OFF)
+    else() # BOOST_VERSIONS VERSION_EQUAL BOOST_NEWVER
+      set(boolean ON)
+    endif()
+    set(USE_SCRIPT_INSERT "set(XP_USE_LATEST_BOOST ${boolean}) # currently only one version supported")
   else()
-    set(USE_SCRIPT_INSERT "#set(XP_USE_LATEST_BOOST ON) # currently multiple versions supported")
+    set(USE_SCRIPT_INSERT "#set(XP_USE_LATEST_BOOST) # currently multiple versions supported")
   endif()
   configure_file(${PRO_DIR}/use/usexp-boost-config.cmake ${STAGE_DIR}/share/cmake/
     @ONLY NEWLINE_STYLE LF
@@ -185,7 +190,7 @@ function(build_boostlibs)
     set(boost_VARIANT "debug,release")
   elseif(XP_BUILD_RELEASE)
     set(boost_VARIANT "release")
-  # NOTE: currently externprolite doesn't support building *only* Debug
+  # NOTE: currently externpro doesn't support building *only* Debug
   elseif(XP_BUILD_DEBUG) # so this elseif is "just in case..."
     set(boost_VARIANT "debug")
   endif()
@@ -233,8 +238,9 @@ function(build_boostlibs)
   # libraries excluded until there's an argument to use them
   list(APPEND exclude_libs context contract coroutine fiber graph_parallel math stacktrace type_erasure wave)
   foreach(lib ${exclude_libs})
-    list(APPEND boost_BUILD --without-${lib})
+    #list(APPEND boost_BUILD --without-${lib})
   endforeach()
+  list(APPEND boost_BUILD --with-filesystem --with-test --with-program_options --with-date_time --with-regex)
   # TRICKY: need zlib, bzip2 include directories at cmake-time (before they're built)
   # so can't use xpGetPkgVar, xpFindPkg, etc - this complicates having multiple versions
   # of zlib and bzip2 (boost will have to choose a version here)

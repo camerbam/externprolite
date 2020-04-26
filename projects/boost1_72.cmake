@@ -1,6 +1,6 @@
 # boost
-set(VER 1.67.0)
-string(REPLACE "." "_" VER_ ${VER}) # 1_67_0
+set(VER 1.72.0)
+string(REPLACE "." "_" VER_ ${VER}) # 1_72_0
 string(REGEX REPLACE "([0-9]+)\\.([0-9]+)(\\.[0-9]+)?" "\\1_\\2" VER2_ ${VER}) # 1_67
 xpProOption(boost${VER2_})
 set(REPO https://github.com/boostorg/boost)
@@ -15,6 +15,5 @@ set(PRO_BOOST${VER2_}
   GIT_ORIGIN git://github.com/boostorg/boost.git
   GIT_TAG boost-${VER} # what to 'git checkout'
   DLURL https://dl.bintray.com/boostorg/release/${VER}/source/boost_${VER_}.tar.bz2
-  DLMD5 ced776cb19428ab8488774e1415535ab
-  SUBPRO boostgil${VER2_} boostmpl${VER2_} boostunits${VER2_}
+  DLMD5 cb40943d2a2cb8ce08d42bc48b0f84f0
   )

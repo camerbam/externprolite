@@ -1,6 +1,6 @@
 # protobuf
 xpProOption(protobuf DBG)
-set(VER 3.0.0-beta-1)
+set(VER 3.11.2)
 set(REPO https://github.com/smanders/protobuf)
 set(REPO_UPSTREAM https://github.com/google/protobuf)
 set(PRO_PROTOBUF
@@ -11,12 +11,12 @@ set(PRO_PROTOBUF
   REPO "repo" ${REPO} "forked protobuf repo on github"
   GRAPH GRAPH_DEPS zlib
   VER ${VER}
-  GIT_ORIGIN git://github.com/smanders/protobuf.git
+  GIT_ORIGIN git://github.com/cameronfrandsen/protobuf.git
   GIT_UPSTREAM git://github.com/google/protobuf.git
-  GIT_TAG xp${VER} # what to 'git checkout'
+  GIT_TAG xp${VER}_temp # what to 'git checkout'
   GIT_REF v${VER} # create patch from this tag to 'git checkout'
   DLURL ${REPO_UPSTREAM}/archive/v${VER}.tar.gz
-  DLMD5 63aad3f1814b5c6cd06c7712cd5ba9db
+  DLMD5 aec031da4040e2d85e208b0b023ee844
   DLNAME protobuf-${VER}.tar.gz
   PATCH ${PATCH_DIR}/protobuf.patch
   DIFF ${REPO}/compare/google:
@@ -41,6 +41,7 @@ function(build_protobuf)
     -DZLIB_MODULE_PATH=ON # with this option ON, we don't need -DZLIB=ON
     -DCMAKE_INSTALL_LIBDIR=lib # without this *some* platforms (RHEL, but not Ubuntu) install to lib64
     -DPROTOBUF_VER=${VER}
+    -Dprotobuf_BUILD_TESTS=OFF
     )
   xpCmakeBuild(protobuf "${zlibTgts}" "${XP_CONFIGURE}")
 endfunction()
