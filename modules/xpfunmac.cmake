@@ -1,7 +1,7 @@
 ########################################
 # xpfunmac.cmake
-#  xp prefix = intended to be used both internally (by externpro) and externally
-#  ip prefix = intended to be used only internally by externpro
+#  xp prefix = intended to be used both internally (by externprolite) and externally
+#  ip prefix = intended to be used only internally by externprolite
 #  fun = functions
 #  mac = macros
 # functions and macros should begin with xp or ip prefix
@@ -30,7 +30,7 @@ macro(xpProOption prj)
 endmacro()
 
 function(xpGetArgValue)
-  set(oneValueArgs ARG VALUE NEXT)
+  set(oneValueArgs ARG VALUE)
   set(multiValueArgs VALUES)
   cmake_parse_arguments(P1 "" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   if(P1_ARG AND P1_VALUE AND P1_UNPARSED_ARGUMENTS)
@@ -41,11 +41,7 @@ function(xpGetArgValue)
       set(${P1_VALUE} "unknown" PARENT_SCOPE)
     endif()
   elseif(P1_ARG AND P1_VALUES AND P1_UNPARSED_ARGUMENTS)
-    if(P1_NEXT)
-      cmake_parse_arguments(P3 "" "${P1_NEXT}" "${P1_ARG}" ${P1_UNPARSED_ARGUMENTS})
-    else()
-      cmake_parse_arguments(P3 "" "" "${P1_ARG}" ${P1_UNPARSED_ARGUMENTS})
-    endif()
+    cmake_parse_arguments(P3 "" "" "${P1_ARG}" ${P1_UNPARSED_ARGUMENTS})
     if(P3_${P1_ARG})
       set(${P1_VALUES} "${P3_${P1_ARG}}" PARENT_SCOPE)
     else()
@@ -314,35 +310,6 @@ function(xpPatchProject)
   endif()
 endfunction()
 
-function(xpBuildDeps depTargets)
-  set(options GRAPH)
-  set(oneValueArgs NAME DESC VER GRAPH_NODE GRAPH_SHAPE GRAPH_LABEL)
-  set(multiValueArgs REPO BUILD_DEPS)
-  cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-  foreach(dep ${P_BUILD_DEPS})
-    set(buildDep ${CMAKE_BINARY_DIR}/xpbase/pro/builddep.cmake)
-    string(TOUPPER ${dep} DEP)
-    if(NOT (XP_DEFAULT OR XP_PRO_${DEP}))
-      message(STATUS "${P_NAME} requires ${dep}")
-      set(XP_PRO_${DEP} ON CACHE BOOL "include ${dep}" FORCE)
-      xpPatchProject(${PRO_${DEP}})
-    endif()
-    xpGetArgValue(${PRO_${DEP}} ARG DEPS_FUNC VALUE DEPS_FUNC)
-    file(WRITE ${buildDep} "${DEPS_FUNC}(${dep}Tgts)\n")
-    include(${buildDep})
-    list(APPEND targets ${${dep}Tgts})
-    # some projects have variables that need to be passed up
-    xpGetArgValue(${PRO_${DEP}} ARG DEPS_VARS VALUES DEPS_VARS)
-    if(NOT DEPS_VARS STREQUAL "unknown")
-      foreach(var ${DEPS_VARS})
-        set(${var} ${${var}} PARENT_SCOPE)
-      endforeach()
-    endif()
-  endforeach()
-  file(REMOVE ${buildDep})
-  set(${depTargets} ${targets} PARENT_SCOPE)
-endfunction()
-
 function(xpCmakeBuild XP_DEPENDS)
   cmake_parse_arguments(P NO_INSTALL "TGT;BUILD_TARGET" "" ${ARGN})
   string(TOUPPER ${XP_DEPENDS} PRJ)
@@ -420,9 +387,6 @@ function(ipAddProject XP_TARGET)
     if(DEFINED XP_CONFIGURE_APPEND)
       list(APPEND XP_CONFIGURE_CMD ${XP_CONFIGURE_APPEND})
     endif()
-    if (NOT DEFINED CMAKE_GENERATOR_PLATFORM)
-      list(APPEND XP_CONFIGURE_CMD "-A ${CMAKE_GENERATOR_PLATFORM}")
-    endif()
     if(XP_BUILD_VERBOSE)
       message(STATUS "target ${XP_TARGET}${XP_BUILD_CONFIGS_MSG}")
       xpVerboseListing("[CONFIGURE]" "${XP_CONFIGURE_CMD}")
@@ -439,6 +403,7 @@ function(ipAddProject XP_TARGET)
     ExternalProject_Add(${XP_TARGET} DEPENDS ${XP_DEPS} ${ADDITIONAL_DEPENDS}
       DOWNLOAD_COMMAND "" DOWNLOAD_DIR ${NULL_DIR}
       SOURCE_DIR ${SOURCE_DIR}
+      CMAKE_GENERATOR_PLATFORM ${CMAKE_GENERATOR_PLATFORM}
       CMAKE_GENERATOR ${XP_CONFIGURE_GEN} CMAKE_ARGS ${XP_CONFIGURE_CMD}
       BUILD_COMMAND ${XP_BUILD_CMD}
       INSTALL_COMMAND ${XP_INSTALL_CMD} INSTALL_DIR ${NULL_DIR}
@@ -558,9 +523,9 @@ function(ipMarkdownLink var _ret)
   set(${_ret} "[${text}](${url} '${title}')" PARENT_SCOPE)
 endfunction()
 
-set(g_README ${CMAKE_BINARY_DIR}/xpbase/pro/README.md)
-set(g_READMEsub ${CMAKE_BINARY_DIR}/xpbase/pro/README.sub.md)
-set(g_READMEdep ${CMAKE_BINARY_DIR}/xpbase/pro/deps.dot)
+set(g_README ${CMAKE_BINARY_DIR}/README.md)
+set(g_READMEsub ${CMAKE_BINARY_DIR}/README.sub.md)
+set(g_READMEdep ${CMAKE_BINARY_DIR}/deps.dot)
 
 function(xpMarkdownReadmeInit)
   file(WRITE ${g_README}
@@ -584,9 +549,9 @@ function(xpMarkdownReadmeAppend proj)
 endfunction()
 
 function(ipMarkdownPro)
-  set(options GRAPH NO_README)
+  set(options GRAPH)
   set(oneValueArgs NAME DESC VER GIT_REF GIT_TAG SUPERPRO DIFF PATCH GRAPH_NODE GRAPH_SHAPE GRAPH_LABEL)
-  set(multiValueArgs WEB LICENSE REPO BUILD_DEPS)
+  set(multiValueArgs WEB LICENSE REPO GRAPH_DEPS)
   cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
   if(DEFINED P_WEB)
     ipMarkdownLink("${P_WEB}" web)
@@ -635,7 +600,7 @@ function(ipMarkdownPro)
         )
     endif()
     file(APPEND ${g_READMEsub} "|${P_SUPERPRO}|${web}|${desc}|${ver}|${repo}|${diff}|\n")
-  elseif(NOT P_NO_README)
+  else()
     file(APPEND ${g_README} "|${web}|${lic}|${desc}|${ver}|${repo}|${diff}|\n")
   endif()
   if(P_GRAPH)
@@ -648,7 +613,6 @@ function(ipMarkdownPro)
     if(NOT DEFINED P_GRAPH_NODE)
       set(P_GRAPH_NODE ${P_NAME})
     endif()
-    ipSanitizeGraph(P_GRAPH_NODE)
     file(APPEND ${g_READMEdep} "  ${P_GRAPH_NODE} [")
     if(DEFINED P_GRAPH_LABEL)
       file(APPEND ${g_READMEdep} "label=\"${P_GRAPH_LABEL}\" ")
@@ -658,20 +622,11 @@ function(ipMarkdownPro)
     else()
       file(APPEND ${g_READMEdep} "shape=diamond];\n")
     endif()
-    if(DEFINED P_BUILD_DEPS)
-      foreach(dep ${P_BUILD_DEPS})
-        ipSanitizeGraph(dep)
+    if(DEFINED P_GRAPH_DEPS)
+      foreach(dep ${P_GRAPH_DEPS})
         file(APPEND ${g_READMEdep} "  ${P_GRAPH_NODE} -> ${dep};\n")
       endforeach()
     endif()
-  endif()
-endfunction()
-
-function(ipSanitizeGraph node)
-  string(REGEX REPLACE "([.-]+)" "_" sanitized ${${node}})
-  if(NOT sanitized STREQUAL ${${node}})
-    set(P_GRAPH_LABEL ${${node}} PARENT_SCOPE)
-    set(${node} ${sanitized} PARENT_SCOPE)
   endif()
 endfunction()
 
@@ -687,10 +642,10 @@ function(xpMarkdownReadmeFinalize)
     file(MD5 ${g_READMEdep}.txt hash)
     file(READ ${g_READMEdep}.txt depsDotDot)
     file(REMOVE ${g_READMEdep} ${g_READMEdep}.txt)
-    set(user smanders)
+    set(user cameronfrandsen)
     set(branch dev)
     set(mark depgraph_${hash})
-    set(url "https://raw.githubusercontent.com/${user}/externpro/${branch}/projects/README.md")
+    set(url "https://raw.githubusercontent.com/${user}/externprolite/${branch}/projects/README.md")
     string(REPLACE "/" "%2F" url ${url})
     string(REPLACE ":" "%3A" url ${url})
     file(APPEND ${g_README}
@@ -774,7 +729,19 @@ function(xpInstallPro)
     )
   install(FILES ${XP_INFOFILE} DESTINATION .)
   install(FILES ${STAGE_DIR}/share/cmake/Find${CMAKE_PROJECT_NAME}.cmake DESTINATION share/cmake)
+  if(NOT DEFINED CPACK_PACKAGE_VENDOR AND DEFINED PACKAGE_VENDOR)
+    set(CPACK_PACKAGE_VENDOR ${PACKAGE_VENDOR})
+  endif()
+  proSetCpackOpts()
   include(CPack)
+endfunction()
+
+function(xpListPrependToAll var prefix)
+  set(listVar)
+  foreach(f ${ARGN})
+    list(APPEND listVar "${prefix}/${f}")
+  endforeach()
+  set(${var} "${listVar}" PARENT_SCOPE)
 endfunction()
 
 function(xpListAppendTrailingSlash var)
@@ -906,10 +873,9 @@ function(xpGitIgnoredDirs var dir)
     OUTPUT_VARIABLE ignoredDirs
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-  string(REPLACE ";" "\\\\;" ignoredDirs "${ignoredDirs}")
-  string(REPLACE "\n" ";" ignoredDirs "${ignoredDirs}")
+  separate_arguments(ignoredDirs UNIX_COMMAND "${ignoredDirs}")
   list(APPEND ignoredDirs ${ARGN})
-  list(TRANSFORM ignoredDirs PREPEND ${dir}/)
+  xpListPrependToAll(ignoredDirs ${dir} ${ignoredDirs})
   set(${var} "${ignoredDirs}" PARENT_SCOPE)
 endfunction()
 
@@ -925,9 +891,8 @@ function(xpGitIgnoredFiles var dir)
     OUTPUT_VARIABLE ignoredFiles
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-  string(REPLACE ";" "\\\\;" ignoredFiles "${ignoredFiles}")
-  string(REPLACE "\n" ";" ignoredFiles "${ignoredFiles}")
-  list(TRANSFORM ignoredFiles PREPEND ${dir}/)
+  separate_arguments(ignoredFiles UNIX_COMMAND "${ignoredFiles}")
+  xpListPrependToAll(ignoredFiles ${dir} ${ignoredFiles})
   set(${var} "${ignoredFiles}" PARENT_SCOPE)
 endfunction()
 
@@ -943,17 +908,15 @@ function(xpGitUntrackedFiles var dir)
     OUTPUT_VARIABLE untrackedFiles
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-  string(REPLACE ";" "\\\\;" untrackedFiles "${untrackedFiles}")
-  string(REPLACE "\n" ";" untrackedFiles "${untrackedFiles}")
-  list(TRANSFORM untrackedFiles PREPEND ${dir}/)
+  separate_arguments(untrackedFiles UNIX_COMMAND "${untrackedFiles}")
+  xpListPrependToAll(untrackedFiles ${dir} ${untrackedFiles})
   set(${var} "${untrackedFiles}" PARENT_SCOPE)
 endfunction()
 
 function(xpGlobFiles var item)
-  set(globexpr ${ARGN})
   if(IS_DIRECTORY ${item})
     string(REGEX REPLACE "/$" "" item ${item}) # remove trailing slash
-    list(TRANSFORM globexpr PREPEND ${item}/)
+    xpListPrependToAll(globexpr ${item} ${ARGN})
     # NOTE: By default GLOB_RECURSE omits directories from result list
     file(GLOB_RECURSE dirFiles ${globexpr})
     xpGitUntrackedFiles(untrackedFiles ${item})
@@ -965,7 +928,7 @@ function(xpGlobFiles var item)
     list(APPEND listVar ${dirFiles})
   else()
     get_filename_component(dir ${item} DIRECTORY)
-    list(TRANSFORM globexpr PREPEND ${dir}/)
+    xpListPrependToAll(globexpr ${dir} ${ARGN})
     file(GLOB match ${globexpr})
     list(FIND match ${item} idx)
     if(NOT ${idx} EQUAL -1)
@@ -1062,10 +1025,6 @@ macro(xpSourceListAppend)
   else()
     list(REMOVE_DUPLICATES masterSrcList)
     if(EXISTS ${CMAKE_SOURCE_DIR}/.git)
-      if(NOT GIT_FOUND)
-        include(FindGit)
-        find_package(Git)
-      endif()
       xpGitIgnoredDirs(ignoredDirs ${CMAKE_SOURCE_DIR} .git/)
       xpGitUntrackedFiles(untrackedFiles ${CMAKE_SOURCE_DIR})
       file(GLOB topdir ${_dir}/*)
@@ -1074,9 +1033,8 @@ macro(xpSourceListAppend)
       list(SORT topdir) # sort list in-place alphabetically
       foreach(item ${topdir})
         xpGlobFiles(repoFiles ${item} *)
+        xpGlobFiles(fmtFiles ${item} *.c *.h *.cpp *.hpp *.cu *.cuh *.proto)
       endforeach()
-      set(fmtFiles ${repoFiles})
-      list(FILTER fmtFiles INCLUDE REGEX "^.*\\.(c|h|cpp|hpp|cu|cuh|proto)$")
       foreach(item ${XP_SOURCE_DIR_IGNORE})
         xpGlobFiles(ignoreFiles ${item} *)
       endforeach()
@@ -1107,26 +1065,21 @@ macro(xpSourceListAppend)
       endif()
       ####
       # Windows can't handle passing very many files to clang-format
-      if(NOT MSVC AND fmtFiles)
+      if(NOT MSVC AND fmtFiles AND NOT ${CMAKE_PROJECT_NAME} STREQUAL externprolite)
         # make paths relative to CMAKE_SOURCE_DIR
         xpListRemoveFromAll(fmtFiles ${CMAKE_SOURCE_DIR} . ${fmtFiles})
         list(LENGTH fmtFiles lenFmtFiles)
-        # NOTE: externpro doesn't have usexp-clangformat-config.cmake at cmake time
-        if(NOT CMAKE_PROJECT_NAME STREQUAL externpro)
-          xpGetPkgVar(clangformat EXE)
-          add_custom_command(OUTPUT format_cmake
-            COMMAND ${CLANGFORMAT_EXE} -style=file -i ${fmtFiles}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-            COMMENT "Running clang-format on ${lenFmtFiles} files..."
-            )
-        endif()
+        xpGetPkgVar(clangformat EXE)
+        add_custom_command(OUTPUT format_cmake
+          COMMAND ${CLANGFORMAT_EXE} -style=file -i ${fmtFiles}
+          WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+          COMMENT "Running clang-format on ${lenFmtFiles} files..."
+          )
         string(REPLACE ";" "\n" fmtFiles "${fmtFiles}")
         file(WRITE ${CMAKE_BINARY_DIR}/formatfiles.txt ${fmtFiles}\n)
+        add_custom_target(format SOURCES ${CMAKE_BINARY_DIR}/formatfiles.txt DEPENDS format_cmake)
         list(APPEND masterSrcList ${CMAKE_BINARY_DIR}/formatfiles.txt)
-        if(NOT TARGET format)
-          add_custom_target(format SOURCES ${CMAKE_BINARY_DIR}/formatfiles.txt DEPENDS format_cmake)
-          set_property(TARGET format PROPERTY FOLDER CMakeTargets)
-        endif()
+        set_property(TARGET format PROPERTY FOLDER CMakeTargets)
       endif()
     endif() # is a .git repo
     option(XP_CSCOPE "always update cscope database" OFF)
@@ -1148,8 +1101,7 @@ macro(xpSourceListAppend)
 endmacro()
 
 function(xpSourceDirIgnore)
-  set(ignoredDirs ${ARGN})
-  list(TRANSFORM ignoredDirs PREPEND ${CMAKE_CURRENT_SOURCE_DIR}/)
+  xpListPrependToAll(ignoredDirs ${CMAKE_CURRENT_SOURCE_DIR} ${ARGN})
   list(APPEND XP_SOURCE_DIR_IGNORE ${ignoredDirs})
   set(XP_SOURCE_DIR_IGNORE ${XP_SOURCE_DIR_IGNORE} PARENT_SCOPE)
 endfunction()
@@ -1837,7 +1789,7 @@ macro(xpCommonFlags)
         CMAKE_C_FLAGS_DEBUG
         CMAKE_CXX_FLAGS_RELEASE
         CMAKE_CXX_FLAGS_DEBUG
-        # NOTE: these are the only flags we modify in common (including externpro-built projects), for now
+        # NOTE: these are the only flags we modify in common (including externprolite-built projects), for now
         )
     endif()
   elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
@@ -2020,10 +1972,12 @@ macro(xpSetFlagsGccDebug)
   endif()
   if(XP_COVERAGE AND CMAKE_BUILD_TYPE STREQUAL Debug)
     find_program(XP_PATH_LCOV lcov)
+    find_program(XP_PATH_LCOV lcov)
+    xpGetPkgVar(lcov-to-cobertura-xml SCRIPT) # sets LCOV-TO-COBERTURA-XML_SCRIPT
     find_program(XP_PATH_GENHTML genhtml)
     if(XP_PATH_LCOV AND XP_PATH_GENHTML)
-      if(DEFINED externpro_DIR AND EXISTS ${externpro_DIR})
-        list(APPEND XP_COVERAGE_RM '${externpro_DIR}/*')
+      if(DEFINED externprolite_DIR AND EXISTS ${externprolite_DIR})
+        list(APPEND XP_COVERAGE_RM '${externprolite_DIR}/*')
       endif()
       if(EXISTS /usr AND IS_DIRECTORY /usr)
         list(APPEND XP_COVERAGE_RM '/usr/*')
@@ -2039,7 +1993,7 @@ macro(xpSetFlagsGccDebug)
           -a ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-test.info -o ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.info
         COMMAND ${XP_PATH_LCOV} --remove ${PROJECT_NAME}.info ${XP_COVERAGE_RM} --output-file ${PROJECT_NAME}-cleaned.info
         COMMAND ${XP_PATH_GENHTML} -o report ${PROJECT_NAME}-cleaned.info
-        COMMAND ${CMAKE_COMMAND} -E remove ${PROJECT_NAME}*.info
+        COMMAND python ${LCOV-TO-COBERTURA-XML_SCRIPT} ${PROJECT_NAME}-cleaned.info
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         )
       xpStringAppendIfDne(CMAKE_CXX_FLAGS_DEBUG "--coverage")
@@ -2107,11 +2061,8 @@ macro(xpSetFlagsGcc)
 endmacro()
 
 macro(xpSetFlags) # preprocessor, compiler, linker flags
-  xpEnforceOutOfSourceBuilds()
-  xpSetUnitTestTools()
   enable_testing()
   set_property(GLOBAL PROPERTY USE_FOLDERS ON) # enables Solution Folders
-  set_property(GLOBAL PROPERTY GLOBAL_DEPENDS_NO_CYCLES ON)
   xpCommonFlags()
   xpEnableWarnings()
   if(NOT DEFINED XP_CMAKE_REPO_INSYNC)
@@ -2119,6 +2070,9 @@ macro(xpSetFlags) # preprocessor, compiler, linker flags
   endif()
   if(MSVC)
     xpSetFlagsMsvc()
+    if(EXISTS ${xpThisDir}/usexp-bzip2-config.cmake AND EXISTS ${xpThisDir}/usexp-zlib-config.cmake)
+      xpFindPkg(PKGS bzip2 zlib) # for BOOST_DEFINITIONS
+    endif()
   elseif(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     xpSetFlagsGcc()
   endif()

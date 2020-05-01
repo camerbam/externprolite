@@ -15,17 +15,20 @@
 
 ## dependency graph
 
-![deps.dot graph](https://g.gravizo.com/source/depgraph_4fcbe99f095f3c36d82c31294fe2425b?https%3A%2F%2Fraw.githubusercontent.com%2Fsmanders%2Fexternpro%2Fdev%2Fprojects%2FREADME.md)
+![deps.dot graph](https://g.gravizo.com/source/depgraph_7534f50dff50e228418c5fa10ab8ade8?https%3A%2F%2Fraw.githubusercontent.com%2Fcameronfrandsen%2Fexternprolite%2Fdev%2Fprojects%2FREADME.md)
 <details>
 <summary></summary>
-depgraph_4fcbe99f095f3c36d82c31294fe2425b
+depgraph_7534f50dff50e228418c5fa10ab8ade8
 digraph GG {
   node [fontsize=12];
   boost [shape=diamond];
+  boost -> zlib;
+  boost -> bzip2;
   bzip2 [shape=diamond];
   openssl [shape=diamond];
   protobuf [shape=diamond];
+  protobuf -> zlib;
   zlib [shape=diamond];
 }
-depgraph_4fcbe99f095f3c36d82c31294fe2425b
+depgraph_7534f50dff50e228418c5fa10ab8ade8
 </details>
