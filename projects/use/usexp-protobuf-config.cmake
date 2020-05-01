@@ -18,7 +18,6 @@ unset(${PRJ}_INCLUDE_DIR CACHE)
 find_path(${PRJ}_INCLUDE_DIR google/protobuf/service.h PATHS ${XP_ROOTDIR}/include${verDir} NO_DEFAULT_PATH)
 # protobuf installs a config file which includes -targets.cmake and -module.cmake
 include(${XP_ROOTDIR}/lib/cmake/protobuf${ver}/${prj}-config.cmake)
-include(${XP_ROOTDIR}/lib/cmake/protobuf${ver}/${prj}-module.cmake)
 set(${PRJ}_LIBRARIES libprotobuf)
 set(${PRJ}_PROTOC_EXECUTABLE protoc) # TRICKY: must be named this to match what's used in -module.cmake
 set(reqVars ${PRJ}_VER ${PRJ}_INCLUDE_DIR ${PRJ}_LIBRARIES ${PRJ}_PROTOC_EXECUTABLE)
