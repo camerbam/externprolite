@@ -73,7 +73,7 @@ set(BOOST_ROOT ${XP_ROOTDIR})
 # TODO: remove the following once FindBoost.cmake: uses -dumpfullversion, detects clang
 if(UNIX AND TRUE) #"${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
   include(${CMAKE_CURRENT_LIST_DIR}/xpfunmac.cmake)
-  xpGetCompilerPrefix(Boost_COMPILER GCC_TWO_VER)
+  xpGetCompilerPrefix(Boost_COMPILER GCC_ONE_VER)
   set(Boost_COMPILER "-${Boost_COMPILER}")
 endif()
 # TODO: remove the following once CMAKE_CXX_COMPILER_ARCHITECTURE_ID is defined for all supported compilers

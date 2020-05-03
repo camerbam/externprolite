@@ -2,7 +2,7 @@
 
 |project|license|description|version|repository|patch/diff|
 |-------|-------|-----------|-------|----------|----------|
-|[boost](http://www.boost.org/ 'Boost website')|[open](http://www.boost.org/users/license.html 'Boost Software License')|libraries that give C++ a boost|1.72.0|[repo](https://github.com/boostorg/boost 'boost repo on github')|none|
+|[boost](http://www.boost.org/ 'Boost website')|[open](http://www.boost.org/users/license.html 'Boost Software License')|libraries that give C++ a boost|1.69.0|[repo](https://github.com/boostorg/boost 'boost repo on github')|none|
 |[bzip2](https://en.wikipedia.org/wiki/Bzip2 'bzip2 on wikipedia')|[open](https://spdx.org/licenses/bzip2-1.0.6.html 'bzip2 BSD-style license')|lossless block-sorting data compression library|1.0.6|[repo](https://github.com/smanders/bzip2 'forked bzip2 repo on github')|[diff](https://github.com/smanders/bzip2/compare/v1.0.6...xp1.0.6 'patch/diff')|
 |[lcov-to-cobertura-xml](https://github.com/eriwen/lcov-to-cobertura-xml 'lcov-to-cobertura-xml website')|[open](https://github.com/eriwen/lcov-to-cobertura-xml/blob/master/LICENSE 'lcov-to-cobertura-xml license: Apache')|Converts lcov output to Cobertura-compatible XML for CI |1.6|[repo](https://github.com/eriwen/lcov-to-cobertura-xml 'lcov-to-cobertura-xml repo on github')|none|
 |[OpenSSL](http://www.openssl.org/ 'OpenSSL website')|[open](http://www.openssl.org/source/license.html 'OpenSSL, SSLeay License: BSD-style')|Cryptography and SSL/TLS Toolkit|1.0.2a|[repo](https://github.com/smanders/openssl 'forked openssl repo on github')|[diff](https://github.com/smanders/openssl/compare/openssl:OpenSSL_1_0_2a...xp_1_0_2a 'patch/diff')|
