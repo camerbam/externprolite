@@ -11,7 +11,7 @@ set(PRO_PROTOBUF
   REPO "repo" ${REPO} "forked protobuf repo on github"
   GRAPH GRAPH_DEPS zlib
   VER ${VER}
-  GIT_ORIGIN git://github.com/smanders/protobuf.git
+  GIT_ORIGIN git://github.com/cameronfrandsen/protobuf.git
   GIT_UPSTREAM git://github.com/google/protobuf.git
   GIT_TAG xp${VER} # what to 'git checkout'
   GIT_REF v${VER} # create patch from this tag to 'git checkout'
